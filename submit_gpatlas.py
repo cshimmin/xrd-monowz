@@ -18,8 +18,9 @@ SAMPLE_NAMES = [
     "WtaunuB", "WtaunuC", "WtaunuL", 
     "ttbar", "singletop_s", "singletop_t", "singletop_Wt",
     "WW", "WZ", "ZZ", 
-    "HVT", "monoWjj", "monoZjj",
-    "data"
+    "monoWjj", "monoZjj",
+#    "data",
+    "data_extended",
 ]
 
 DEFAULT_NFILE_PER_JOB = 5
