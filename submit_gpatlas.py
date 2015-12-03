@@ -162,6 +162,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Submit jobs to the gpatlas SLURM cluster, using files from local XrootD.")
     parser.add_argument("--xrd-base", dest="xrd_base", default="/atlas/local/cshimmin/complete", help="The base XrootD path in which to look for data (i.e. the path containing the <DERIVATION>/<TAG>/ directories)")
     parser.add_argument("--xrd-host", dest="xrd_host", default="gpatlas2-ib.local", help="The main xrootd redirector server")
+    parser.add_argument("--config", help="Use a specific config file (default is FrameworkExe_monoVH/data/frameworkMonoVH-read_<derivation>.cfg)")
     parser.add_argument("--local", action="store_true", help="Run in local mode (rather than submit to batch)")
     parser.add_argument("--njobs", type=int, default=4, help="Number of concurrent jobs to run (local mode only).")
     parser.add_argument("--tag", default="00-16-01", help="The CxAOD data tag to use")
@@ -193,7 +194,12 @@ if __name__ == "__main__":
         print "No output path specified!"
         print "Will use:", args.out
 
-    config_file = "data/FrameworkExe_monoVH/framework_monoVH-read_%s.cfg" % (selected_derivation)
+    if not args.config:
+        config_file = "data/FrameworkExe_monoVH/framework_monoVH-read_%s.cfg" % (selected_derivation)
+        print "Using default config file:", config_file
+    else:
+        config_file = args.config
+        print "Using custom config file:", config_file
 
     xrd_base_path = "{0}/{1}_13TeV/CxAOD_{2}".format(args.xrd_base, selected_derivation, args.tag)
 
