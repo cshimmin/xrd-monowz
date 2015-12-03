@@ -19,15 +19,15 @@ SAMPLE_NAMES = [
     "ttbar", "singletop_s", "singletop_t", "singletop_Wt",
     "WW", "WZ", "ZZ", 
     "monoWjj", "monoZjj",
-#    "data",
-    "data_extended",
+    "data",
+#    "data_extended",
 ]
 
-DEFAULT_NFILE_PER_JOB = 5
+DEFAULT_NFILE_PER_JOB = 1
 
 NFILES_SPEC = {
     1: ['Znunu*', 'Wenu*'],
-    2: ['Zee*', 'Zmumu*',],
+    #2: ['Zee*', 'Zmumu*', 'monoWjj', 'monoZjj', 'data'],
 }
 
 def get_nfiles(sample_name):
@@ -161,9 +161,14 @@ if __name__ == "__main__":
     parser.add_argument("--tag", default="00-16-01", help="The CxAOD data tag to use")
     parser.add_argument("--out", help="The path to place all generated file lists, logs, and outputs")
     parser.add_argument("--retrylist", help="A file containing the names of jobs (e.g. ttbar_11) you'd like to resubmit. Assumes the inputfile lists are already generated.")
+    parser.add_argument("--default-nfile", type=int, help="The default number of files per job")
     parser.add_argument("--slurmopts", help="Additional options to pass to slurm sbatch (make sure to put them in quotes!)")
     parser.add_argument("n_lep", type=int, help="The lepton region to use (0,1,2)")
     args = parser.parse_args()
+
+    if args.default_nfile:
+        print "Setting default nfiles_per_job =", args.default_nfile
+        DEFAULT_NFILE_PER_JOB = args.default_nfile
 
     # set the derivation name
     derivations = {
