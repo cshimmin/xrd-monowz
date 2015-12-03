@@ -156,6 +156,7 @@ def submit_job(config_file, job_path, files, sample_name, local=False, slurmopts
         job = sp.Popen(cmd, stdout=f_log, stderr=f_err)
         job._f_log = f_log
         job._f_err = f_err
+        job._sample_name = sample_name
         return job
 
 if __name__ == "__main__":
@@ -277,7 +278,10 @@ if __name__ == "__main__":
 
         return_codes = [j.poll() for j in queue.finished_jobs]
         if any(return_codes):
-            print "Warning! Had some nonzero returncodes!"
-            print return_codes
+            print "WARNING! Had some nonzero returncodes:"
+            #print return_codes
+            for j in queue.finished_jobs:
+                if j.poll():
+                    print "  Name=%s\texitcode=%d" % (j._sample_name, j.poll())
         else:
             print "All jobs returned 0."
