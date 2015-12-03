@@ -61,6 +61,9 @@ def xrd_files_recursive(host, base_path):
         if l.startswith('d'):
             dirs.append(path)
         elif l.startswith('-'):
+            if not '.root' in os.path.basename(path):
+                print >>sys.stderr, "WARNING: Skipping non-rootfile found in xrd: %s" % path
+                continue
             files.append(path)
 
     sub_files = it.chain.from_iterable(map(lambda d: xrd_files_recursive(host, d), dirs))
@@ -98,6 +101,9 @@ class LocalQueue:
                 sys.stdout.flush()
             time.sleep(interval)
             self.check_jobs()
+        if verbose:
+            sys.stdout.write("\n")
+            sys.stdout.flush()
 
 def submit_job(config_file, job_path, files, sample_name, local=False, slurmopts=None):
     out_path = os.path.join(job_path, 'outputs')
